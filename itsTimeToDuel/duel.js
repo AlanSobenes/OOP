@@ -6,10 +6,10 @@ class Card{
 }
 
 class Unit extends Card{
-    constructor(name, cost, resilience, power){
+    constructor(name, cost, power, resilience){
         super(name, cost);
-        this.resilience = resilience;
         this.power = power;
+        this.resilience = resilience;
     }
     
     attack(target){
@@ -31,48 +31,34 @@ class Effect extends Card{
         this.stat = stat;
         this.magnitude = magnitude;
     }
-    
-    hardAlgorithm(target){
+    play(target){
         if( target instanceof Unit){
-            target.resilience += 3;
-            console.log(`${target.name} has increased Resilience to ${target.resilience}`);
-        } else {
-            throw new Error('Target must be a Unit!');
-        }
-    }
+            if(this.stat == 'power'){
+                target.power += this.magnitude;
+                console.log(`${target.name} has increased Power to ${target.power}`)
+            }
+            if(this.stat == 'resilience'){
+                target.resilience += this.magnitude;
+                console.log(`${target.name} has changed resilience to ${target.resilience}`)
+            }
             
-
-    unhandledPromise(target){
-        if( target instanceof Unit){
-            target.resilience -= 2;
-            console.log(`${target.name} has decreased Resilience to ${target.resilience}`);
         } else {
             throw new Error('Target must be a Unit!');
         }
     }
-            
-
-    pairProgramming(target){
-        if( target instanceof Unit){
-            target.power += 2;
-            console.log(`${target.name} has increased Power to ${target.power}`)
-        } else {
-            throw new Error('Target must be a Unit!');
-        }
-    }
-
-
 }
 
 const unit1 = new Unit('Red Belt Ninja', 3, 3, 4);
 const unit2 = new Unit('Black Belt Ninja', 4, 5, 4);
-const effect1 = new Effect('Hard Algorithm', 2, 'Increase Target\'s resilience by 3', 'resilience', +3);
+const effect1 = new Effect('Hard Algorithm', 2, 'Increase Target\'s resilience by 3', 'resilience', 3);
 const effect2 = new Effect('Unhandled Promise', 1, 'Reduce target\'s resilience by 2', 'resilience', -2);
-const effect3 = new Effect('Pair Programming', 3, 'Increase target\'s power by 2', 'power', +2);
+const effect3 = new Effect('Pair Programming', 3, 'Increase target\'s power by 2', 'power', 2);
 
-effect1.hardAlgorithm(unit1);
-effect2.unhandledPromise(unit2);
-effect3.pairProgramming(unit1);
+effect1.play(unit1);
+effect2.play(unit1);
+effect3.play(unit1);
 unit1.attack(unit2);
+
+console.log(unit2)
 
 
